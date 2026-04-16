@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Nexa Digital Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A1628;
+            --secondary: #1a2d4a;
+            --accent: #0EA5E9;
+            --accent-light: #38BDF8;
+            --accent-glow: rgba(14, 165, 233, 0.2);
+            --accent-dark: #0284C7;
+            --bg: #FAFBFC;
+            --bg-light: #F1F5F9;
+            --card-bg: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 24px rgba(10, 22, 40, 0.06);
+            --shadow-hover: 0 8px 32px rgba(14, 165, 233, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; font-weight: 700; line-height: 1.2; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 1000; transition: box-shadow 0.3s ease; }
+        header.scrolled { box-shadow: 0 2px 20px rgba(15, 23, 42, 0.08); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+
+        .logo { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo svg { width: 42px; height: 42px; }
+        .logo span { color: var(--accent); }
+
+        nav { display: flex; align-items: center; gap: 40px; }
+        nav a { color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 15px; position: relative; transition: color 0.3s ease; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
+        nav a:hover, nav a.active { color: var(--primary); }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        .cta-btn { background: var(--accent); color: white; padding: 12px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.3s ease; }
+        .cta-btn:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+
+        .page-hero { padding: 140px 0 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); position: relative; overflow: hidden; }
+        .page-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.15) 0%, transparent 50%); }
+        .page-hero-content { position: relative; z-index: 1; text-align: center; }
+        .page-hero h1 { font-size: 48px; color: white; margin-bottom: 16px; }
+        .page-hero p { font-size: 18px; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto; }
+        .breadcrumb { display: flex; justify-content: center; gap: 12px; margin-top: 24px; font-size: 14px; }
+        .breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .breadcrumb span { color: var(--accent-light); }
+
+        section { padding: 100px 0; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 42px; color: var(--primary); margin-bottom: 16px; }
+        .section-header p { font-size: 18px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+        .filter-tabs { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+        .filter-tab { padding: 12px 24px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 9999px; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; }
+        .filter-tab:hover, .filter-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .project-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer; }
+        .project-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .project-image { height: 220px; overflow: hidden; }
+        .project-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .project-card:hover .project-image img { transform: scale(1.1); }
+        .project-info { padding: 24px; }
+        .project-category { display: inline-block; padding: 6px 12px; background: rgba(14, 165, 233, 0.1); color: var(--accent); font-size: 12px; font-weight: 600; border-radius: 6px; margin-bottom: 12px; }
+        .project-info h3 { font-size: 18px; color: var(--primary); margin-bottom: 8px; }
+        .project-info p { font-size: 14px; color: var(--text-secondary); }
+
+        .client-logos { background: var(--card-bg); }
+        .logos-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 40px; align-items: center; }
+        .logo-item { text-align: center; padding: 20px; }
+        .logo-item span { font-size: 24px; font-weight: 700; color: var(--text-secondary); opacity: 0.6; }
+
+        .case-study { background: var(--bg); }
+        .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .case-image { border-radius: 20px; overflow: hidden; height: 350px; }
+        .case-image img { width: 100%; height: 100%; object-fit: cover; }
+        .case-content h3 { font-size: 28px; color: var(--primary); margin-bottom: 16px; }
+        .case-content p { font-size: 16px; color: var(--text-secondary); margin-bottom: 24px; line-height: 1.8; }
+        .case-stats { display: flex; gap: 32px; }
+        .case-stat span { display: block; font-size: 32px; font-weight: 800; color: var(--accent); }
+        .case-stat label { font-size: 14px; color: var(--text-secondary); }
+
+        .cta-section { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(129, 140, 248, 0.1) 0%, transparent 50%); }
+        .cta-content { position: relative; z-index: 1; }
+        .cta-section h2 { font-size: 40px; color: white; margin-bottom: 24px; }
+        .cta-section p { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .btn-primary { background: var(--accent); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.3s ease; display: inline-block; }
+        .btn-primary:hover { background: var(--accent-light); transform: translateY(-3px); box-shadow: 0 12px 30px var(--accent-glow); }
+
+        footer { background: var(--primary); padding: 80px 0 30px; color: rgba(255,255,255,0.7); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+        .footer-brand .logo { color: white; margin-bottom: 20px; display: inline-flex; }
+        .footer-brand p { font-size: 15px; line-height: 1.8; max-width: 280px; }
+        .footer-col h4 { font-size: 16px; color: white; margin-bottom: 24px; font-weight: 600; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 15px; transition: color 0.3s ease; }
+        .footer-col ul a:hover { color: white; }
+        .contact-info p { display: flex; align-items: center; gap: 10px; font-size: 15px; margin-bottom: 12px; }
+        .social-links { display: flex; gap: 12px; }
+        .social-link { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 18px; transition: all 0.3s ease; }
+        .social-link:hover { background: var(--accent); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; font-size: 14px; }
+
+        @media (max-width: 1024px) {
+            .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .logos-grid { grid-template-columns: repeat(3, 1fr); }
+            .case-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 32px; }
+            section { padding: 60px 0; }
+            .projects-grid, .logos-grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="42" height="42" rx="10" fill="url(#logoGradientH)"/>
+                    <path d="M12 21L18 12L24 21L30 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 27L18 18L24 27L30 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                    <defs><linearGradient id="logoGradientH" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#0EA5E9"/><stop offset="1" stop-color="#0284C7"/></linearGradient></defs>
+                </svg>
+                Nexa<span>.</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="projects.html" class="active">Projects</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <a href="contact.html" class="cta-btn">Get Started</a>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Our Projects</h1>
+                <p>A showcase of our work across various industries and technologies.</p>
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>›</span>
+                    <span>Projects</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects-section">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Projects</button>
+                <button class="filter-tab" data-filter="web">Web</button>
+                <button class="filter-tab" data-filter="mobile">Mobile</button>
+                <button class="filter-tab" data-filter="uiux">UI/UX</button>
+                <button class="filter-tab" data-filter="cloud">Cloud</button>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-category="web">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=220&fit=crop" alt="E-Commerce"></div>
+                    <div class="project-info"><span class="project-category">Web</span><h3>Retail Platform Redesign</h3><p>Full e-commerce platform with payment integration</p></div>
+                </div>
+                <div class="project-card" data-category="mobile">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=220&fit=crop" alt="Healthcare"></div>
+                    <div class="project-info"><span class="project-category">Mobile</span><h3>Medical App Development</h3><p>Healthcare mobile app with appointment scheduling</p></div>
+                </div>
+                <div class="project-card" data-category="web">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=220&fit=crop" alt="FinTech"></div>
+                    <div class="project-info"><span class="project-category">Web</span><h3>Banking Dashboard System</h3><p>Comprehensive financial analytics dashboard</p></div>
+                </div>
+                <div class="project-card" data-category="web">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=400&h=220&fit=crop" alt="Education"></div>
+                    <div class="project-info"><span class="project-category">Web</span><h3>Learning Management System</h3><p>Online education platform with video streaming</p></div>
+                </div>
+                <div class="project-card" data-category="mobile">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=220&fit=crop" alt="Fitness"></div>
+                    <div class="project-info"><span class="project-category">Mobile</span><h3>Fitness Tracking App</h3><p>Workout and nutrition tracking mobile application</p></div>
+                </div>
+                <div class="project-card" data-category="uiux">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=220&fit=crop" alt="Real Estate"></div>
+                    <div class="project-info"><span class="project-category">UI/UX</span><h3>Real Estate Platform Redesign</h3><p>Complete UI/UX overhaul for property platform</p></div>
+                </div>
+                <div class="project-card" data-category="cloud">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=220&fit=crop" alt="Cloud"></div>
+                    <div class="project-info"><span class="project-category">Cloud</span><h3>Cloud Migration Project</h3><p>Enterprise cloud infrastructure migration to AWS</p></div>
+                </div>
+                <div class="project-card" data-category="web">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=400&h=220&fit=crop" alt="Restaurant"></div>
+                    <div class="project-info"><span class="project-category">Web</span><h3>Restaurant Reservation System</h3><p>Online booking and table management system</p></div>
+                </div>
+                <div class="project-card" data-category="mobile">
+                    <div class="project-image"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=220&fit=crop" alt="Delivery"></div>
+                    <div class="project-info"><span class="project-category">Mobile</span><h3>Food Delivery App</h3><p>On-demand food delivery mobile application</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="case-study">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured Case Study</h2>
+                <p>How we helped a startup scale their business</p>
+            </div>
+            <div class="case-grid">
+                <div class="case-image"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=350&fit=crop" alt="Case Study"></div>
+                <div class="case-content">
+                    <h3>RetailEcom - E-Commerce Transformation</h3>
+                    <p>We partnered with RetailEcom to completely transform their online presence. From a basic website to a full-featured e-commerce platform with advanced inventory management, payment processing, and analytics dashboard.</p>
+                    <p>The result was a 150% increase in online sales and a 40% improvement in customer retention.</p>
+                    <div class="case-stats">
+                        <div class="case-stat"><span>150%</span><label>Revenue Increase</label></div>
+                        <div class="case-stat"><span>40%</span><label>Customer Retention</label></div>
+                        <div class="case-stat"><span>3x</span><label>Faster Load Time</label></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="client-logos">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted By</h2>
+                <p>Companies we've had the privilege to work with</p>
+            </div>
+            <div class="logos-grid">
+                <div class="logo-item"><span>TechVentures</span></div>
+                <div class="logo-item"><span>StartupHub</span></div>
+                <div class="logo-item"><span>GlobalTech</span></div>
+                <div class="logo-item"><span>InnovateCo</span></div>
+                <div class="logo-item"><span>FutureSoft</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Have a Project in Mind?</h2>
+                <p>Let's discuss how we can bring your vision to life.</p>
+                <a href="contact.html" class="btn-primary">Start Your Project</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="42" height="42" rx="10" fill="url(#logoGradientFooter)"/>
+                            <path d="M12 21L18 12L24 21L30 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 27L18 18L24 27L30 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                            <defs><linearGradient id="logoGradientFooter" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#0EA5E9"/><stop offset="1" stop-color="#0284C7"/></linearGradient></defs>
+                        </svg>
+                        <span style="color: white;">Nexa</span>
+                    </a>
+                    <p>Transforming businesses through innovative digital solutions. Your vision, our expertise.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Web Development</a></li>
+                        <li><a href="services.html">Mobile Apps</a></li>
+                        <li><a href="services.html">UI/UX Design</a></li>
+                        <li><a href="services.html">Cloud Solutions</a></li>
+                        <li><a href="services.html">Consulting</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <div class="contact-info">
+                        <p>📧 hello@nexadigital.com</p>
+                        <p>📞 +1 (555) 123-4567</p>
+                        <p>📍 San Francisco, CA</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">tw</a>
+                        <a href="#" class="social-link">fb</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Nexa Digital Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filter = tab.dataset.filter;
+
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

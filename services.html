@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Nexa Digital Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A1628;
+            --secondary: #1a2d4a;
+            --accent: #0EA5E9;
+            --accent-light: #38BDF8;
+            --accent-glow: rgba(14, 165, 233, 0.2);
+            --accent-dark: #0284C7;
+            --bg: #FAFBFC;
+            --bg-light: #F1F5F9;
+            --card-bg: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --shadow: 0 4px 24px rgba(10, 22, 40, 0.06);
+            --shadow-hover: 0 8px 32px rgba(14, 165, 233, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; font-weight: 700; line-height: 1.2; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        header { position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); z-index: 1000; transition: box-shadow 0.3s ease; }
+        header.scrolled { box-shadow: 0 2px 20px rgba(15, 23, 42, 0.08); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+
+        .logo { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .logo svg { width: 42px; height: 42px; }
+        .logo span { color: var(--accent); }
+
+        nav { display: flex; align-items: center; gap: 40px; }
+        nav a { color: var(--text-secondary); text-decoration: none; font-weight: 500; font-size: 15px; position: relative; transition: color 0.3s ease; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
+        nav a:hover, nav a.active { color: var(--primary); }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        .cta-btn { background: var(--accent); color: white; padding: 12px 28px; border-radius: 9999px; text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.3s ease; }
+        .cta-btn:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+
+        .page-hero { padding: 140px 0 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); position: relative; overflow: hidden; }
+        .page-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.15) 0%, transparent 50%); }
+        .page-hero-content { position: relative; z-index: 1; text-align: center; }
+        .page-hero h1 { font-size: 48px; color: white; margin-bottom: 16px; }
+        .page-hero p { font-size: 18px; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto; }
+        .breadcrumb { display: flex; justify-content: center; gap: 12px; margin-top: 24px; font-size: 14px; }
+        .breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+        .breadcrumb span { color: var(--accent-light); }
+
+        section { padding: 100px 0; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 42px; color: var(--primary); margin-bottom: 16px; }
+        .section-header p { font-size: 18px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .service-card { background: var(--card-bg); border-radius: 20px; padding: 40px 32px; box-shadow: var(--shadow); transition: all 0.3s ease; border: 1px solid transparent; }
+        .service-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
+        .service-icon { width: 72px; height: 72px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 24px; }
+        .service-card h3 { font-size: 22px; color: var(--primary); margin-bottom: 12px; }
+        .service-card p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
+        .service-card ul { list-style: none; }
+        .service-card ul li { font-size: 14px; color: var(--text-secondary); padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        .service-card ul li::before { content: '✓'; color: var(--accent); font-weight: 600; }
+
+        .tech-stack { background: var(--card-bg); }
+        .tech-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; }
+        .tech-item { background: var(--bg); padding: 24px; border-radius: 12px; text-align: center; transition: all 0.3s ease; }
+        .tech-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+        .tech-item span { font-size: 32px; display: block; margin-bottom: 8px; }
+        .tech-item h4 { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+
+        .process { background: var(--bg); }
+        .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+        .process-card { text-align: center; position: relative; }
+        .process-card::after { content: '→'; position: absolute; right: -24px; top: 40px; font-size: 24px; color: var(--accent); }
+        .process-card:last-child::after { display: none; }
+        .process-number { width: 64px; height: 64px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; margin: 0 auto 20px; }
+        .process-card h4 { font-size: 20px; color: var(--primary); margin-bottom: 12px; }
+        .process-card p { font-size: 14px; color: var(--text-secondary); }
+
+        .cta-section { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 80px 0; text-align: center; position: relative; overflow: hidden; }
+        .cta-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(129, 140, 248, 0.1) 0%, transparent 50%); }
+        .cta-content { position: relative; z-index: 1; }
+        .cta-section h2 { font-size: 40px; color: white; margin-bottom: 24px; }
+        .cta-section p { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .btn-primary { background: var(--accent); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.3s ease; display: inline-block; }
+        .btn-primary:hover { background: var(--accent-light); transform: translateY(-3px); box-shadow: 0 12px 30px var(--accent-glow); }
+
+        footer { background: var(--primary); padding: 80px 0 30px; color: rgba(255,255,255,0.7); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+        .footer-brand .logo { color: white; margin-bottom: 20px; display: inline-flex; }
+        .footer-brand p { font-size: 15px; line-height: 1.8; max-width: 280px; }
+        .footer-col h4 { font-size: 16px; color: white; margin-bottom: 24px; font-weight: 600; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 15px; transition: color 0.3s ease; }
+        .footer-col ul a:hover { color: white; }
+        .contact-info p { display: flex; align-items: center; gap: 10px; font-size: 15px; margin-bottom: 12px; }
+        .social-links { display: flex; gap: 12px; }
+        .social-link { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 18px; transition: all 0.3s ease; }
+        .social-link:hover { background: var(--accent); transform: translateY(-3px); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; font-size: 14px; }
+
+        @media (max-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .tech-grid { grid-template-columns: repeat(3, 1fr); }
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+            .process-card::after { display: none; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 32px; }
+            section { padding: 60px 0; }
+            .services-grid, .tech-grid, .process-grid { grid-template-columns: 1fr; }
+            nav { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="42" height="42" rx="10" fill="url(#logoGradientH)"/>
+                    <path d="M12 21L18 12L24 21L30 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 27L18 18L24 27L30 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                    <defs><linearGradient id="logoGradientH" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#0EA5E9"/><stop offset="1" stop-color="#0284C7"/></linearGradient></defs>
+                </svg>
+                Nexa<span>.</span>
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html" class="active">Services</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <a href="contact.html" class="cta-btn">Get Started</a>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="page-hero-content">
+                <h1>Our Services</h1>
+                <p>Comprehensive IT solutions tailored to elevate your business and deliver measurable results.</p>
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>›</span>
+                    <span>Services</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What We Offer</h2>
+                <p>End-to-end digital solutions for your business</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(99, 102, 241, 0.1);">💻</div>
+                    <h3>Web Development</h3>
+                    <p>Custom web applications built with cutting-edge technologies for your business needs.</p>
+                    <ul>
+                        <li>Responsive Websites</li>
+                        <li>Web Applications</li>
+                        <li>E-Commerce Solutions</li>
+                        <li>CMS Development</li>
+                        <li>API Integration</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(16, 185, 129, 0.1);">📱</div>
+                    <h3>Mobile App Development</h3>
+                    <p>Native and cross-platform mobile apps for iOS and Android platforms.</p>
+                    <ul>
+                        <li>iOS Development</li>
+                        <li>Android Development</li>
+                        <li>Cross-Platform Apps</li>
+                        <li>App Store Optimization</li>
+                        <li>Maintenance & Support</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(245, 158, 11, 0.1);">🎨</div>
+                    <h3>UI/UX Design</h3>
+                    <p>User-centered design solutions that enhance engagement and conversions.</p>
+                    <ul>
+                        <li>Website Design</li>
+                        <li>Mobile App Design</li>
+                        <li>Brand Identity</li>
+                        <li>Prototyping</li>
+                        <li>Design Systems</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(139, 92, 246, 0.1);">☁️</div>
+                    <h3>Cloud Solutions</h3>
+                    <p>Scalable cloud infrastructure and migration services for modern businesses.</p>
+                    <ul>
+                        <li>Cloud Migration</li>
+                        <li>AWS Services</li>
+                        <li>Azure Solutions</li>
+                        <li>DevOps Consulting</li>
+                        <li>Cloud Security</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(236, 72, 153, 0.1);">🔌</div>
+                    <h3>API Development</h3>
+                    <p>Robust and scalable APIs to connect your systems and enable integration.</p>
+                    <ul>
+                        <li>REST API Development</li>
+                        <li>GraphQL APIs</li>
+                        <li>API Integration</li>
+                        <li>Third-party APIs</li>
+                        <li>API Documentation</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(59, 130, 246, 0.1);">🛒</div>
+                    <h3>E-Commerce Solutions</h3>
+                    <p>Feature-rich online stores that drive sales and deliver exceptional experiences.</p>
+                    <ul>
+                        <li>Shopify Development</li>
+                        <li>WooCommerce</li>
+                        <li>Custom E-Commerce</li>
+                        <li>Payment Integration</li>
+                        <li>Inventory Management</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(34, 197, 94, 0.1);">🏢</div>
+                    <h3>Enterprise Software</h3>
+                    <p>Custom enterprise solutions to streamline operations and boost productivity.</p>
+                    <ul>
+                        <li>ERP Systems</li>
+                        <li>CRM Solutions</li>
+                        <li>Custom Dashboards</li>
+                        <li>Workflow Automation</li>
+                        <li>Data Analytics</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon" style="background: rgba(234, 179, 8, 0.1);">💼</div>
+                    <h3>IT Consulting</h3>
+                    <p>Strategic guidance to help you make informed technology decisions.</p>
+                    <ul>
+                        <li>Technology Audit</li>
+                        <li>Digital Strategy</li>
+                        <li>Software Assessment</li>
+                        <li>Security Consulting</li>
+                        <li>Training & Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-stack">
+        <div class="container">
+            <div class="section-header">
+                <h2>Technology Stack</h2>
+                <p>Modern tools and frameworks we use</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item"><span>⚛️</span><h4>React</h4></div>
+                <div class="tech-item"><span>📘</span><h4>TypeScript</h4></div>
+                <div class="tech-item"><span>🔷</span><h4>.NET</h4></div>
+                <div class="tech-item"><span>🐍</span><h4>Python</h4></div>
+                <div class="tech-item"><span>🟢</span><h4>Node.js</h4></div>
+                <div class="tech-item"><span>📦</span><h4>PostgreSQL</h4></div>
+                <div class="tech-item"><span>🐬</span><h4>MySQL</h4></div>
+                <div class="tech-item"><span>☁️</span><h4>AWS</h4></div>
+                <div class="tech-item"><span>🔷</span><h4>Azure</h4></div>
+                <div class="tech-item"><span>📱</span><h4>Flutter</h4></div>
+                <div class="tech-item"><span>🍎</span><h4>Swift</h4></div>
+                <div class="tech-item"><span>🤖</span><h4>Kotlin</h4></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Process</h2>
+                <p>How we deliver exceptional results</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-card">
+                    <div class="process-number">1</div>
+                    <h4>Discovery</h4>
+                    <p>We analyze your requirements, business goals, and target audience to create a detailed roadmap.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">2</div>
+                    <h4>Design</h4>
+                    <p>Our designers create intuitive wireframes and visual designs that align with your brand.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">3</div>
+                    <h4>Development</h4>
+                    <p>Our developers build your solution using best practices and modern technologies.</p>
+                </div>
+                <div class="process-card">
+                    <div class="process-number">4</div>
+                    <h4>Deployment</h4>
+                    <p>We thoroughly test and deploy your solution, providing ongoing support and maintenance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Build Something Amazing?</h2>
+                <p>Let's discuss your project and create a solution that drives results.</p>
+                <a href="contact.html" class="btn-primary">Start Your Project</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="42" height="42" rx="10" fill="url(#logoGradientFooter)"/>
+                            <path d="M12 21L18 12L24 21L30 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 27L18 18L24 27L30 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                            <defs><linearGradient id="logoGradientFooter" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse"><stop stop-color="#0EA5E9"/><stop offset="1" stop-color="#0284C7"/></linearGradient></defs>
+                        </svg>
+                        <span style="color: white;">Nexa</span>
+                    </a>
+                    <p>Transforming businesses through innovative digital solutions. Your vision, our expertise.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="services.html">Web Development</a></li>
+                        <li><a href="services.html">Mobile Apps</a></li>
+                        <li><a href="services.html">UI/UX Design</a></li>
+                        <li><a href="services.html">Cloud Solutions</a></li>
+                        <li><a href="services.html">Consulting</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <div class="contact-info">
+                        <p>📧 hello@nexadigital.com</p>
+                        <p>📞 +1 (555) 123-4567</p>
+                        <p>📍 San Francisco, CA</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">tw</a>
+                        <a href="#" class="social-link">fb</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Nexa Digital Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
